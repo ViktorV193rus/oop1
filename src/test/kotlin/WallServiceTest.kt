@@ -1,12 +1,21 @@
 import org.junit.Test
 
 import org.junit.Assert.*
+import org.junit.Before
 
 class WallServiceTest {
+    @Before
+    fun clearBeforeTest() {
+
+    }
 
     @Test
     fun addPost() {
-        val post1 = Post(id = 100, authorId = 100, authorName = "Ivan", "text", published = 1, 2021)
+        val post1 = Post(1, 100, "Ivan", "text", 100, 2021, "Liza",
+            search = "",
+            checkCopyrightLink = "",
+            likes = Likes(10)
+        )
         val expected = 2
         WallService.add(post1)
         val result = WallService.add(post1).id
@@ -15,17 +24,22 @@ class WallServiceTest {
 
     @Test
     fun update() {
-        val post1 = Post(id = 10, authorId = 88, authorName = "Ivan", content = "text", published = 100, date = 2021)
-        val post2 = Post(id = 11, authorId = 99, authorName = "Ivan2", content = "text", published = 101, date = 2022)
-        //val post3 = Post(id = 12, authorId = 100, authorName = "Ivan3", content = "tra-ta-ta", published = 102, date = 2023)
-        WallService.add(post1)
-        val result = WallService.update(post2)
-        val expected = "text"
-        assertFalse(expected,result)
+        val service = WallService
+        service.add(Post(2, 100, "Viktor", "text", 100, 2022, "Liza", "", "", Likes(1)))
+        service.add(Post(3, 101, "Viktor", "text", 101, 2023, "Liza", "", "", Likes(12)))
+        val update = Post(3,101, "Viktor", "text", 101, 2023, "Liza", "", "", Likes(12))
+
+        val result = service.update(update)
+
+        assertTrue(result)
     }
     @Test
     fun newComment() {
-        val postComment = Post(1, authorId = 1, authorName = "Ivan", "text", published = 1, date = 2021)
+        val postComment = Post(1, 100, "Ivan", "text", 100, 2021, "Liza",
+            search = "",
+            checkCopyrightLink = "",
+            likes = Likes(10)
+        )
         val commentForTest1 = Comment(101, "yra", id = 1, canPost = false, groupsCanPost = false, canClose = false, canOpen = false)
         val expected = "yra"
         WallService.add(postComment)
@@ -36,7 +50,11 @@ class WallServiceTest {
 
     @Test
     fun noPost() {
-        val post1 = Post(1, authorId = 1, authorName = "Ivan", "text", published = 1, date = 2021)
+        val post1 = Post(1, 100, "Ivan", "text", 100, 2021, "Liza",
+            search = "",
+            checkCopyrightLink = "",
+            likes = Likes(10)
+        )
         WallService.add(post1)
         val commentTest2 = Comment(101, "text", id = 1, canPost = false, groupsCanPost = false, canClose = false, canOpen = false)
         WallService.newComment(commentTest2, 1)

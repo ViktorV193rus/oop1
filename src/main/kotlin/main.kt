@@ -1,3 +1,39 @@
+data class Post(
+    val id: Int,
+    val authorId: Long,
+    val authorName: String,
+    val content: String,
+    val published: Long,
+    val date: Int,
+    val repost: String,
+    val search: String,
+    val checkCopyrightLink: String,
+    var likes: Likes
+) {
+
+}
+
+data class Comment(
+    val count: Long,
+    val text: String,
+    val id: Int,
+    val canPost: Boolean,
+    val groupsCanPost: Boolean,
+    val canClose: Boolean,
+    val canOpen: Boolean
+) {
+
+}
+
+class Likes(likes: Int) {
+    var likes = likes
+        set(value) {
+            if (value < 0) {
+                return
+            }
+            field = value
+        }
+}
 
 object WallService {
     private var posts = emptyArray<Post>()
@@ -33,10 +69,10 @@ object WallService {
         }
         throw NoPost("Пост удален или не существует")
     }
-
-
 }
 
 fun main() {
 
 }
+
+
